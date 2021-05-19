@@ -1,6 +1,8 @@
 describe('Basic user flow for SPA ', () => {
   beforeAll(async () => {
     await page.goto('http://127.0.0.1:5500');
+    await page.waitForTimeout(500);
+
   });
 
   // test 1 is given
@@ -28,11 +30,22 @@ describe('Basic user flow for SPA ', () => {
 
   it('Test3: Clicking first <journal-entry>, new URL should contain /#entry1', async () => {
     // implement test3: Clicking on the first journal entry should update the URL to contain “/#entry1”
+    const entries = await page.$$('journal-entry');
+    await entries[0].click();
 
+    await page.waitForNavigation();
+    const url = page.url();
+    let eveal = url.indexOf("/#entry1") > -1;
+    expect(eveal).toBe(true);
   });
 
   it('Test4: On first Entry page - checking page header title', async () => {
     // implement test4: Clicking on the first journal entry should update the header text to “Entry 1” 
+    const title = await page.$eval('h1', (title) => {
+      return title.textContent;
+    });
+    console.log(title);
+    expect(title == "Entry 1").toBe(true);
 
   });
 
@@ -72,7 +85,7 @@ describe('Basic user flow for SPA ', () => {
 
   });
 
-  it('Test10: Clicking the back button, new URL should be /#entry1', async() => {
+  it('Test10: Clicking the back button, new URL should be /#entry1', async () => {
     // implement test10: Clicking on the back button should update the URL to contain ‘/#entry1’
 
   });
@@ -102,5 +115,5 @@ describe('Basic user flow for SPA ', () => {
   // create your own test 19
 
   // create your own test 20
-  
+
 });
